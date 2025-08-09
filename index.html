@@ -748,73 +748,66 @@
   </div>
 
   <script>
-    // Replace with your actual Google Apps Script URL
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+// Replace with your actual Google Apps Script URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxM3eQEPWs8VCIu9lygiZ9HsbEItDrcAW98Lmf4B3k9GH5i-K59Q5sN_4zpmx39D1KZ/exec';
 
-    // Update slider value text
-    function updateSliderValue(slider) {
-      const valueElement = document.getElementById(slider.name + '_value');
-      if (valueElement) valueElement.textContent = slider.value + '%';
+// Submit handler
+document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const submitBtn = document.querySelector('.submit-btn');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'Submitting...';
+  submitBtn.disabled = true;
+
+  try {
+    // Collect form data
+    const formData = new FormData(e.target);
+
+    // Aggregate checkbox group
+    const successMetrics = [];
+    document.querySelectorAll('input[name="successMetrics"]:checked').forEach(cb => successMetrics.push(cb.value));
+    
+    // Convert to plain object
+    const data = {};
+    for (const [k, v] of formData.entries()) {
+      data[k] = v;
     }
+    
+    // Add aggregated checkbox data
+    data.successMetrics = successMetrics.join(',');
+    
+    // Add timestamp
+    data.timestamp = new Date().toISOString();
 
-    // Initialize all slider-value labels to current values on load
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('input[type="range"].slider').forEach(sl => updateSliderValue(sl));
+    console.log('Submitting data:', data); // For debugging
+
+    // Submit to Google Apps Script
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      mode: 'no-cors' // Required for Google Apps Script
     });
 
-    // Submit handler
-    document.getElementById('surveyForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const submitBtn = document.querySelector('.submit-btn');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = 'Submitting...';
-      submitBtn.disabled = true;
-
-      try {
-        // Collect form data
-        const formData = new FormData(e.target);
-
-        // Aggregate checkbox group
-        const successMetrics = [];
-        document.querySelectorAll('input[name="successMetrics"]:checked').forEach(cb => successMetrics.push(cb.value));
-        formData.set('successMetrics', successMetrics.join(','));
-
-        // Ranking as simple mapping
-        const rankMap = {
-          "Electrode Fabrication": formData.get('rank_electrode'),
-          "Cell Assembly": formData.get('rank_cellassembly'),
-          "Formation and Testing": formData.get('rank_formation'),
-        };
-        formData.set('stepsRanking', JSON.stringify(rankMap));
-
-        // Convert to plain object
-        const data = {};
-        for (const [k, v] of formData.entries()) data[k] = v;
-
-        // Timestamp
-        data.timestamp = new Date().toISOString();
-
-        // Submit (no-cors)
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-          mode: 'no-cors'
-        });
-
-        alert('Thank you! Your survey has been submitted.');
-        e.target.reset();
-        // Reset slider labels
-        document.querySelectorAll('.slider-value').forEach(el => el.textContent = '0%');
-      } catch (err) {
-        console.error(err);
-        alert('There was an error submitting your survey. Please try again.');
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
-    });
+    // Since we're using no-cors, we can't read the response
+    // But if we get here without an error, it probably worked
+    alert('Thank you! Your survey has been submitted successfully.');
+    e.target.reset();
+    
+    // Reset slider labels
+    document.querySelectorAll('.slider-value').forEach(el => el.textContent = '0%');
+    
+  } catch (err) {
+    console.error('Submission error:', err);
+    alert('There was an error submitting your survey. Please try again.');
+  } finally {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+});
   </script>
 </body>
 </html>
