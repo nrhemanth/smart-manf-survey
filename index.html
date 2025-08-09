@@ -1,174 +1,786 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Smart Manufacturing Impact – Battery Production (Single Page)</title>
-<style>
-  :root{--bg:#f3f4f6;--panel:#ffffff;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;--brand:#374151;--pos:#10b981;--neg:#ef4444;--neutral:#9ca3af}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-  .wrap{max-width:1200px;margin:24px auto;padding:16px}
-  h1{margin:0 0 8px 0;font-size:clamp(20px,3vw,28px)}
-  p{margin:6px 0;color:var(--muted)}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
-  .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .badge{border:1px solid var(--line);background:#f9fafb;border-radius:999px;padding:6px 10px;font-size:12px;color:#374151}
-  table{width:100%;border-collapse:separate;border-spacing:0 10px}
-  thead th{position:sticky;top:0;background:#f8fafc;border-bottom:1px solid var(--line);padding:8px;font-weight:600}
-  tbody tr{background:#fafafa;border:1px solid var(--line)}
-  tbody th, tbody td{padding:8px;vertical-align:top}
-  tbody th{white-space:nowrap;text-align:left}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impact of Smart Manufacturing on Battery Production</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* Slider */
-  .cell{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-  .slider{width:100%;height:8px;border-radius:999px;appearance:none;background:linear-gradient(90deg,#d1d5db,#d1d5db);outline:none}
-  .slider::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:#374151;box-shadow:0 0 0 2px #fff inset;cursor:pointer}
-  .slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#374151;border:none}
-  .ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
-  .val{min-width:64px;text-align:right;font-variant-numeric:tabular-nums}
-  .naRow{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:12px;color:var(--muted)}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
 
-  .grid{display:grid;gap:10px}
-  .cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-  @media (max-width:1000px){.cols-2{grid-template-columns:1fr}}
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
-  button{border-radius:10px;border:1px solid var(--line);background:#111827;color:#fff;padding:10px 14px;cursor:pointer}
-  button.secondary{background:#4b5563}
-  .note{font-size:12px;color:var(--muted)}
-</style>
+        .section {
+            background: white;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+
+        .description {
+            background: #f7fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #4299e1;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Radio button styles */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .radio-option:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 0.8rem;
+            width: 16px;
+            height: 16px;
+        }
+
+        .radio-option label {
+            cursor: pointer;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .slider-label {
+            display: block;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: #e2e8f0;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #718096;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #718096;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Dynamic slider colors */
+        .slider.negative::-webkit-slider-thumb {
+            background: #48bb78;
+        }
+
+        .slider.positive::-webkit-slider-thumb {
+            background: #f56565;
+        }
+
+        .slider.negative::-moz-range-thumb {
+            background: #48bb78;
+        }
+
+        .slider.positive::-moz-range-thumb {
+            background: #f56565;
+        }
+
+        .slider-value {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4a5568;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .slider-value.negative {
+            background: #48bb78;
+        }
+
+        .slider-value.positive {
+            background: #f56565;
+        }
+
+        .slider-value::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: #4a5568;
+        }
+
+        .slider-value.negative::after {
+            border-top-color: #48bb78;
+        }
+
+        .slider-value.positive::after {
+            border-top-color: #f56565;
+        }
+
+        .slider-wrapper:hover .slider-value {
+            opacity: 1;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        .slider-labels .negative {
+            color: #48bb78;
+        }
+
+        .slider-labels .positive {
+            color: #f56565;
+        }
+
+        /* Cost parameter grid */
+        .cost-parameters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .cost-parameters {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Results display */
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .result-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .result-section h4 {
+            color: #2d3748;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            padding: 0.3rem 0;
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .result-value.negative {
+            color: #48bb78;
+        }
+
+        .result-value.positive {
+            color: #f56565;
+        }
+
+        /* Submit button */
+        .submit-button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-button:hover {
+            background: #3182ce;
+        }
+
+        /* Thank you message */
+        .thank-you {
+            text-align: center;
+            padding: 2rem;
+            background: #f0fff4;
+            border-radius: 8px;
+            border: 1px solid #9ae6b4;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .thank-you.show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="card">
-      <h1>Smart Manufacturing Impact on Battery Production</h1>
-      <p>Estimate the <strong>percentage change in cost</strong> attributable to each capability for each cost parameter. Use <strong>negative values for cost reduction</strong> and <strong>positive values for cost increase</strong>. Sliders range from −20% to +20% by default.</p>
-      <div class="legend">
-        <span class="badge">Capabilities: Predictive Maintenance, Predictive Quality, Energy Optimization, Traceability, Digital Production Planning, Virtual Commissioning, Materials Flow Optimization</span>
-        <span class="badge">Cost parameters: Raw Material, Manufacturing, Energy, Labor, Maintenance & Repair, Scrap & Waste</span>
-      </div>
-    </header>
+    <div class="container">
+        <!-- Header -->
+        <div class="section">
+            <h1>Impact of Smart Manufacturing on Battery Production</h1>
+            <p class="subtitle">Smart Manufacturing Awareness Survey - August 2025</p>
+        </div>
 
-    <section class="card" id="matrix_all">
-      <h2 style="margin:0 0 10px">Impact Matrix (single page)</h2>
-      <div class="grid cols-2" id="matrices"></div>
-      <div class="toolbar">
-        <button id="downloadCsv">Download CSV</button>
-        <button class="secondary" id="copyJson">Copy JSON</button>
-        <span id="status" class="note" role="status"></span>
-      </div>
-    </section>
+        <!-- Section 1: Smart Manufacturing Awareness -->
+        <div class="section">
+            <h2>Section 1: Smart Manufacturing Awareness</h2>
+            
+            <div class="question">
+                <div class="question-text">1. Describe your current role. *</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="role1" name="role" value="academic">
+                        <label for="role1">Academic Researcher</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="role2" name="role" value="industry-rd">
+                        <label for="role2">Industry Professional (R&D)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="role3" name="role" value="industry-mfg">
+                        <label for="role3">Industry Professional (Manufacturing)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="role4" name="role" value="consultant">
+                        <label for="role4">Technical Consultant</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="role5" name="role" value="government">
+                        <label for="role5">Government Employee</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="role6" name="role" value="other">
+                        <label for="role6">Other</label>
+                    </div>
+                </div>
+            </div>
 
-    <section class="card">
-      <h3 style="margin:0 0 6px">Notes / Assumptions (optional)</h3>
-      <textarea id="notes" rows="4" style="width:100%;border:1px solid var(--line);border-radius:10px;padding:8px"></textarea>
-    </section>
-  </div>
+            <div class="question">
+                <div class="question-text">2. I am aware of smart manufacturing applications in the battery industry.</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="aware1" name="awareness" value="strongly-agree">
+                        <label for="aware1">Strongly Agree</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="aware2" name="awareness" value="agree">
+                        <label for="aware2">Agree</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="aware3" name="awareness" value="neutral">
+                        <label for="aware3">Neutral</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="aware4" name="awareness" value="disagree">
+                        <label for="aware4">Disagree</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="aware5" name="awareness" value="strongly-disagree">
+                        <label for="aware5">Strongly Disagree</label>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<script>
-  // ===== Config =====
-  const CAPABILITIES = [
-    'Predictive Maintenance','Predictive Quality','Energy Optimization','Traceability','Digital Production Planning','Virtual Commissioning','Materials Flow Optimization'
-  ];
-  const COSTS = ['Raw Material','Manufacturing','Energy','Labor','Maintenance & Repair','Scrap & Waste'];
-  const PROCESSES = [
-    {key:'electrode', title:'Process: Electrode Fabrication'},
-    {key:'assembly', title:'Process: Cell Assembly'},
-    {key:'formation', title:'Process: Formation & Testing'},
-  ];
-  const SL_MIN=-20, SL_MAX=20, SL_STEP=1, DEFAULT=0;
+        <!-- Section 2: Electrode Fabrication -->
+        <div class="section">
+            <h2>Section 2: Process-Specific Smart Manufacturing (Electrode Fabrication)</h2>
+            
+            <div class="description">
+                <p>Please specify the impact of smart manufacturing capabilities on different cost parameters using sliders (-20% to +20% impact range, where <span style="color: #48bb78; font-weight: bold;">negative values indicate cost reduction</span> and <span style="color: #f56565; font-weight: bold;">positive values indicate cost increase</span>).</p>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Predictive Maintenance Impact on Cost Parameters</div>
+                <div class="cost-parameters">
+                    <div class="slider-container">
+                        <label class="slider-label">Raw Materials Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pm-raw-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pm-raw-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Manufacturing Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pm-mfg-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pm-mfg-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Energy Consumption</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pm-energy-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pm-energy-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Labor Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pm-labor-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pm-labor-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Maintenance Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pm-maintenance-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pm-maintenance-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Scrap Rate Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pm-scrap-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pm-scrap-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  // ===== Build stacked matrices =====
-  const mount = document.getElementById('matrices');
-  PROCESSES.forEach(proc=>{
-    const card = document.createElement('div'); card.className='card'; card.style.margin='0';
-    const h = document.createElement('h3'); h.textContent = proc.title; h.style.margin='0 0 8px'; card.appendChild(h);
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const thr = document.createElement('tr');
-    const th0 = document.createElement('th'); th0.textContent='Capability \\ Cost Parameter'; thr.appendChild(th0);
-    COSTS.forEach(c=>{ const th=document.createElement('th'); th.textContent=c; thr.appendChild(th); });
-    thead.appendChild(thr); table.appendChild(thead);
-    const tbody = document.createElement('tbody');
+        <!-- Section 3: Cell Assembly -->
+        <div class="section">
+            <h2>Section 3: Process-Specific Smart Manufacturing (Cell Assembly)</h2>
+            
+            <div class="question">
+                <div class="question-text">Predictive Quality Impact on Cost Parameters</div>
+                <div class="cost-parameters">
+                    <div class="slider-container">
+                        <label class="slider-label">Raw Materials Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pq-raw-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pq-raw-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Manufacturing Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pq-mfg-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pq-mfg-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Energy Consumption</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pq-energy-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pq-energy-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Labor Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pq-labor-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pq-labor-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Maintenance Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pq-maintenance-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pq-maintenance-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Scrap Rate Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="pq-scrap-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="pq-scrap-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    CAPABILITIES.forEach((cap,i)=>{
-      const tr=document.createElement('tr');
-      const th=document.createElement('th'); th.textContent=cap; tr.appendChild(th);
-      COSTS.forEach((cp,j)=>{
-        const td=document.createElement('td'); td.appendChild(makeCell(`${proc.key}_${i}_${j}`)); tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
+        <!-- Section 4: Formation and Testing -->
+        <div class="section">
+            <h2>Section 4: Process-Specific Smart Manufacturing (Cell Formation and Testing)</h2>
+            
+            <div class="question">
+                <div class="question-text">Energy Optimization Impact on Cost Parameters</div>
+                <div class="cost-parameters">
+                    <div class="slider-container">
+                        <label class="slider-label">Raw Materials Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="eo-raw-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="eo-raw-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Manufacturing Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="eo-mfg-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="eo-mfg-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Energy Consumption</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="eo-energy-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="eo-energy-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Labor Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="eo-labor-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="eo-labor-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Maintenance Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="eo-maintenance-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="eo-maintenance-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slider-container">
+                        <label class="slider-label">Scrap Rate Costs</label>
+                        <div class="slider-wrapper">
+                            <div class="slider-value" id="eo-scrap-value">0%</div>
+                            <input type="range" min="-20" max="20" value="0" step="1" class="slider" id="eo-scrap-slider">
+                            <div class="slider-labels">
+                                <span class="negative">-20%</span>
+                                <span>0%</span>
+                                <span class="positive">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    table.appendChild(tbody);
-    card.appendChild(table);
-    mount.appendChild(card);
-  });
+        <!-- Results Section -->
+        <div class="section">
+            <h2>Survey Results Summary</h2>
+            <p>Your responses will be displayed here as you adjust the sliders:</p>
+            
+            <div class="results" id="results-container">
+                <div class="result-section">
+                    <h4>Electrode Fabrication - Predictive Maintenance</h4>
+                    <div class="result-item">
+                        <span>Raw Materials Impact:</span>
+                        <span class="result-value" id="result-pm-raw">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Manufacturing Cost Impact:</span>
+                        <span class="result-value" id="result-pm-mfg">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Energy Consumption Impact:</span>
+                        <span class="result-value" id="result-pm-energy">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Labor Cost Impact:</span>
+                        <span class="result-value" id="result-pm-labor">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Maintenance Cost Impact:</span>
+                        <span class="result-value" id="result-pm-maintenance">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Scrap Rate Impact:</span>
+                        <span class="result-value" id="result-pm-scrap">0%</span>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <h4>Cell Assembly - Predictive Quality</h4>
+                    <div class="result-item">
+                        <span>Raw Materials Impact:</span>
+                        <span class="result-value" id="result-pq-raw">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Manufacturing Cost Impact:</span>
+                        <span class="result-value" id="result-pq-mfg">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Energy Consumption Impact:</span>
+                        <span class="result-value" id="result-pq-energy">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Labor Cost Impact:</span>
+                        <span class="result-value" id="result-pq-labor">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Maintenance Cost Impact:</span>
+                        <span class="result-value" id="result-pq-maintenance">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Scrap Rate Impact:</span>
+                        <span class="result-value" id="result-pq-scrap">0%</span>
+                    </div>
+                </div>
+                
+                <div class="result-section">
+                    <h4>Formation and Testing - Energy Optimization</h4>
+                    <div class="result-item">
+                        <span>Raw Materials Impact:</span>
+                        <span class="result-value" id="result-eo-raw">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Manufacturing Cost Impact:</span>
+                        <span class="result-value" id="result-eo-mfg">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Energy Consumption Impact:</span>
+                        <span class="result-value" id="result-eo-energy">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Labor Cost Impact:</span>
+                        <span class="result-value" id="result-eo-labor">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Maintenance Cost Impact:</span>
+                        <span class="result-value" id="result-eo-maintenance">0%</span>
+                    </div>
+                    <div class="result-item">
+                        <span>Scrap Rate Impact:</span>
+                        <span class="result-value" id="result-eo-scrap">0%</span>
+                    </div>
+                </div>
+            </div>
 
-  function makeCell(name){
-    const cell=document.createElement('div'); cell.className='cell';
-    const left=document.createElement('div');
-    const slider=document.createElement('input'); slider.type='range'; slider.min=SL_MIN; slider.max=SL_MAX; slider.step=SL_STEP; slider.value=DEFAULT; slider.className='slider'; slider.name=name;
-    const ticks=document.createElement('div'); ticks.className='ticks'; ['−20','−10','0','10','20'].forEach(t=>{const s=document.createElement('span'); s.textContent=(t>0?'+':'')+t; ticks.appendChild(s);});
-    left.appendChild(slider); left.appendChild(ticks);
-
-    const right=document.createElement('div');
-    const val=document.createElement('div'); val.className='val'; val.textContent=fmt(slider.value);
-    const naRow=document.createElement('div'); naRow.className='naRow';
-    const na=document.createElement('input'); na.type='checkbox'; na.id=name+'_na';
-    const lab=document.createElement('label'); lab.htmlFor=na.id; lab.textContent='N/A';
-    naRow.appendChild(na); naRow.appendChild(lab);
-    right.appendChild(val); right.appendChild(naRow);
-
-    slider.addEventListener('input', ()=>{ val.textContent=fmt(slider.value); colorSlider(slider); });
-    na.addEventListener('change', ()=>{ slider.disabled=na.checked; val.textContent = na.checked? 'N/A' : fmt(slider.value); });
-
-    colorSlider(slider);
-
-    cell.appendChild(left); cell.appendChild(right);
-    return cell;
-  }
-
-  function fmt(v){ v=Number(v)||0; return (v>0?'+':'')+v+'%'; }
-
-  // Dynamic slider coloring: green when <0, red when >0, grey at 0
-  function colorSlider(sl){
-    const v = Number(sl.value)||0; const min = Number(sl.min), max = Number(sl.max);
-    const pct = (v - min) / (max - min) * 100; // 0..100
-    let color = 'var(--neutral)';
-    if (v<0) color='var(--pos)';
-    else if (v>0) color='var(--neg)';
-    sl.style.background = `linear-gradient(90deg, ${color} 0% , ${color} ${pct}%, #d1d5db ${pct}%, #d1d5db 100%)`;
-  }
-
-  // ===== Export =====
-  function gather(){
-    const rows=[];
-    PROCESSES.forEach(p=>{
-      CAPABILITIES.forEach((cap,i)=>{
-        COSTS.forEach((cp,j)=>{
-          const name=`${p.key}_${i}_${j}`;
-          const slider=document.querySelector(`input[name="${name}"]`);
-          const na=document.getElementById(name+'_na');
-          rows.push({process:p.title, capability:cap, cost_parameter:cp, value: na&&na.checked? 'N/A' : Number(slider.value)});
-        });
-      });
-    });
-    return {meta:{notes:document.getElementById('notes').value.trim(), ts:new Date().toISOString(), range:`${SL_MIN}..${SL_MAX}`}, rows};
-  }
-  function toCSV(data){
-    const header=['timestamp','process','capability','cost_parameter','value','notes'];
-    const lines=[header.join(',')];
-    data.rows.forEach(r=>{lines.push([data.meta.ts, esc(r.process), esc(r.capability), esc(r.cost_parameter), esc(r.value), esc(data.meta.notes)].join(','));});
-    return lines.join('\n');
-  }
-  function esc(s){ if(s==null) return ''; s=String(s); return /[",\n]/.test(s)? '"'+s.replace(/"/g,'""')+'"' : s; }
-  function download(name,content,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),800); }
-
-  document.getElementById('downloadCsv').onclick=()=>{const d=gather(); download(`smart_mfg_single_${new Date().toISOString().slice(0,10)}.csv`, toCSV(d), 'text/csv'); setStatus('CSV downloaded.');};
-  document.getElementById('copyJson').onclick=async()=>{const d=gather(); const j=JSON.stringify(d,null,2); try{await navigator.clipboard.writeText(j); setStatus('JSON copied.', true);}catch(e){ download(`smart_mfg_single_${new Date().toISOString().slice(0,10)}.json`, j, 'application/json'); setStatus('JSON downloaded.'); }};
-  function setStatus(m, ok){ const s=document.getElementById('status'); s.textContent=m; s.className = ok? 'note' : 'note'; }
-</script>
-</body>
-</html>
+            <button class="submit-button" onclick="submitSurvey()">Submit Survey</button>
+            
+            <div class="thank-you" id="thank-you-message">
+                <h3>Thank you for your participation
