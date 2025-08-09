@@ -5,79 +5,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Impact of Smart Manufacturing on Battery Production</title>
 <style>
-  /* ===== Base ===== */
-  :root{--text:#111;--muted:#6b7280;--line:#e5e7eb;--tab:#f3f4f6;--tab-border:#d1d5db;--accent:#111827;--neg:#ef4444;--pos:#10b981;--neutral:#9ca3af}
+  /* ===== Minimal white layout ===== */
+  :root{
+    --text:#111;--muted:#6b7280;--line:#e5e7eb;--neg:#ef4444;--pos:#10b981;--neutral:#9ca3af;
+  }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;font-family:Arial, Helvetica, sans-serif;color:var(--text);background:#fff}
+  html,body{margin:0;padding:0;font-family:Arial, Helvetica, sans-serif;color:var(--text);background:#fff;}
   .wrap{max-width:980px;margin:0 auto;padding:16px}
+  h1{margin:0 0 6px;font-size:26px}
+  h2{margin:18px 0 6px;font-size:20px}
+  h3{margin:12px 0 6px;font-size:16px}
+  p.lead{color:var(--muted);margin:0 0 10px}
+  .hr{height:1px;background:var(--line);margin:16px 0}
 
-  /* ===== Tabs / Section nav ===== */
-  .tabs{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);padding:8px 0}
-  .tabs .bar{display:flex;gap:8px;overflow:auto;padding-bottom:4px}
-  .tab{flex:0 0 auto;background:var(--tab);border:1px solid var(--tab-border);border-radius:999px;padding:8px 12px;font-size:14px;color:#111;cursor:pointer;text-decoration:none}
-  .tab:hover{background:#e5e7eb}
-
-  /* ===== Sections ===== */
-  .section{padding:18px 0;border-bottom:1px solid var(--line)}
-  .section h2{font-size:20px;margin:0 0 8px}
-  .section p.lead{color:var(--muted);margin:0 0 10px}
-
-  /* ===== Questions ===== */
-  .card{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
+  /* Cards / blocks */
+  .card{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0;background:#fff}
   .qtitle{font-weight:700;margin:0 0 10px}
   .radio-col{display:flex;flex-direction:column;gap:8px}
-  .radio-row{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px}
+  .radio-row{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px}
 
-  /* ===== Slider rows ===== */
-  .row{display:flex;gap:12px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}
+  /* Slider rows */
+  .row{display:flex;gap:12px;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff}
   .row + .row{margin-top:8px}
-  .label{min-width:210px}
-  .value{min-width:58px;text-align:right;font-variant-numeric:tabular-nums;color:#111}
+  .label{min-width:220px}
+  .value{min-width:58px;text-align:right;font-variant-numeric:tabular-nums}
   .hint{font-size:12px;color:var(--muted)}
+  .group{margin:8px 0 12px}
 
   input[type=range].slider{width:100%;height:8px;border-radius:999px;appearance:none;background:linear-gradient(90deg,#d1d5db,#d1d5db);outline:none}
-  input[type=range].slider::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 0 0 1px #0002;cursor:pointer}
-  input[type=range].slider::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#111;border:none}
+  input[type=range].slider::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:#111;border:2px solid #fff;box-shadow:0 0 0 1px #0001;cursor:pointer}
+  input[type=range].slider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#111;border:none}
   .ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
 
-  /* ===== Footer / actions ===== */
+  /* Actions */
   .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
   button{border:1px solid var(--line);background:#111;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer}
   button.secondary{background:#4b5563}
   #status{font-size:12px;color:var(--muted)}
 
   @media (max-width:720px){
-    .label{min-width:auto;max-width:46%}
+    .label{min-width:auto;max-width:60%}
     .row{flex-direction:column;align-items:stretch}
     .value{text-align:left}
   }
 </style>
 </head>
 <body>
-  <div class="tabs">
-    <div class="wrap">
-      <div class="bar">
-        <a class="tab" href="#intro">Intro</a>
-        <a class="tab" href="#sec1">Section 1: Awareness</a>
-        <a class="tab" href="#sec2">Section 2: Electrode</a>
-        <a class="tab" href="#sec3">Section 3: Assembly</a>
-        <a class="tab" href="#sec4">Section 4: Formation & Testing</a>
-        <a class="tab" href="#export">Submit</a>
-      </div>
-    </div>
-  </div>
-
   <main class="wrap">
-    <!-- Intro -->
-    <section id="intro" class="section">
-      <h1 style="margin:0 0 6px;font-size:28px">Impact of Smart Manufacturing on Battery Production</h1>
-      <p class="lead">Please estimate the <strong>percentage change in cost</strong> attributable to each capability for each cost parameter. Use <strong>negative</strong> values for cost <em>reduction</em> and <strong>positive</strong> values for cost <em>increase</em>. Sliders range from −20% to +20%.</p>
-      <div class="hint">Capabilities: Predictive Maintenance, Predictive Quality, Energy Optimization, Traceability, Digital Production Planning, Virtual Commissioning, Materials Flow Optimization. Cost parameters: Raw Material, Manufacturing, Energy, Labor, Maintenance & Repair, Scrap & Waste.</div>
-    </section>
+    <h1>Impact of Smart Manufacturing on Battery Production</h1>
+    <p class="lead">Enter the <strong>percentage change in cost</strong> for each item. 
+      <strong>Negative</strong> values (left) mean <strong>cost reduction</strong> and show <span style="color:var(--pos);font-weight:700">green</span>.
+      <strong>Positive</strong> values (right) mean <strong>cost increase</strong> and show <span style="color:var(--neg);font-weight:700">red</span>.
+      Slider range is ±30% with tick marks at −20, −10, 0, +10, +20 (endpoints capture < −20% and > +20%).
+    </p>
 
-    <!-- Section 1: Awareness -->
-    <section id="sec1" class="section">
+    <div class="hr"></div>
+
+    <!-- ===== Section 1: Awareness (from PDF) ===== -->
+    <section>
       <h2>Section 1 — Smart Manufacturing Awareness</h2>
+
       <div class="card">
         <p class="qtitle">1) Describe your current role *</p>
         <div class="radio-col">
@@ -99,137 +86,215 @@
           <label class="radio-row"><input type="radio" name="aware" value="Strongly disagree"> Strongly disagree</label>
         </div>
       </div>
+      <div class="card">
+        <p class="qtitle">3) Smart manufacturing is useful for improving cost, quality, time, energy efficiency, and scalability.</p>
+        <div class="radio-col">
+          <label class="radio-row"><input type="radio" name="useful" value="Strongly agree"> Strongly agree</label>
+          <label class="radio-row"><input type="radio" name="useful" value="Agree"> Agree</label>
+          <label class="radio-row"><input type="radio" name="useful" value="Neutral"> Neutral</label>
+          <label class="radio-row"><input type="radio" name="useful" value="Disagree"> Disagree</label>
+          <label class="radio-row"><input type="radio" name="useful" value="Strongly disagree"> Strongly disagree</label>
+        </div>
+      </div>
+      <div class="card">
+        <p class="qtitle">4) Smart manufacturing is important for accelerating adoption of new battery chemistries (solid‑state, Li–S, Na‑ion, etc.).</p>
+        <div class="radio-col">
+          <label class="radio-row"><input type="radio" name="newchem" value="Strongly agree"> Strongly agree</label>
+          <label class="radio-row"><input type="radio" name="newchem" value="Agree"> Agree</label>
+          <label class="radio-row"><input type="radio" name="newchem" value="Neutral"> Neutral</label>
+          <label class="radio-row"><input type="radio" name="newchem" value="Disagree"> Disagree</label>
+          <label class="radio-row"><input type="radio" name="newchem" value="Strongly disagree"> Strongly disagree</label>
+        </div>
+      </div>
     </section>
 
-    <!-- Sliders helper legend -->
-    <section class="section" aria-hidden="true">
-      <div class="hint">Legend: values <span style="color:var(--pos);font-weight:700">&lt; 0%</span> (green) indicate cost reduction, values <span style="color:var(--neg);font-weight:700">&gt; 0%</span> (red) indicate cost increase.</div>
-    </section>
+    <div class="hr"></div>
 
-    <!-- Section 2: Electrode Fabrication (one below another) -->
-    <section id="sec2" class="section">
+    <!-- ===== Sections 2–4: Processes with all 7 capabilities (from PDF) ===== -->
+    <section>
       <h2>Section 2 — Process: Electrode Fabrication</h2>
-
-      <div class="card">
-        <p class="qtitle">Predictive Maintenance</p>
-        <div class="row"><div class="label">Raw Material</div><input class="slider" type="range" min="-20" max="20" step="1" name="pm_raw" value="0"><div class="value" data-for="pm_raw">0%</div></div>
-        <div class="row"><div class="label">Manufacturing</div><input class="slider" type="range" min="-20" max="20" step="1" name="pm_mfg" value="0"><div class="value" data-for="pm_mfg">0%</div></div>
-        <div class="row"><div class="label">Energy</div><input class="slider" type="range" min="-20" max="20" step="1" name="pm_energy" value="0"><div class="value" data-for="pm_energy">0%</div></div>
-        <div class="row"><div class="label">Labor</div><input class="slider" type="range" min="-20" max="20" step="1" name="pm_labor" value="0"><div class="value" data-for="pm_labor">0%</div></div>
-        <div class="row"><div class="label">Maintenance & Repair</div><input class="slider" type="range" min="-20" max="20" step="1" name="pm_maint" value="0"><div class="value" data-for="pm_maint">0%</div></div>
-        <div class="row"><div class="label">Scrap & Waste</div><input class="slider" type="range" min="-20" max="20" step="1" name="pm_scrap" value="0"><div class="value" data-for="pm_scrap">0%</div></div>
-      </div>
+      <div id="proc_electrode" class="group"></div>
     </section>
 
-    <!-- Section 3: Cell Assembly -->
-    <section id="sec3" class="section">
+    <section>
       <h2>Section 3 — Process: Cell Assembly</h2>
-      <div class="card">
-        <p class="qtitle">Predictive Quality</p>
-        <div class="row"><div class="label">Raw Material</div><input class="slider" type="range" min="-20" max="20" step="1" name="pq_raw" value="0"><div class="value" data-for="pq_raw">0%</div></div>
-        <div class="row"><div class="label">Manufacturing</div><input class="slider" type="range" min="-20" max="20" step="1" name="pq_mfg" value="0"><div class="value" data-for="pq_mfg">0%</div></div>
-        <div class="row"><div class="label">Energy</div><input class="slider" type="range" min="-20" max="20" step="1" name="pq_energy" value="0"><div class="value" data-for="pq_energy">0%</div></div>
-        <div class="row"><div class="label">Labor</div><input class="slider" type="range" min="-20" max="20" step="1" name="pq_labor" value="0"><div class="value" data-for="pq_labor">0%</div></div>
-        <div class="row"><div class="label">Maintenance & Repair</div><input class="slider" type="range" min="-20" max="20" step="1" name="pq_maint" value="0"><div class="value" data-for="pq_maint">0%</div></div>
-        <div class="row"><div class="label">Scrap & Waste</div><input class="slider" type="range" min="-20" max="20" step="1" name="pq_scrap" value="0"><div class="value" data-for="pq_scrap">0%</div></div>
-      </div>
+      <div id="proc_assembly" class="group"></div>
     </section>
 
-    <!-- Section 4: Formation & Testing -->
-    <section id="sec4" class="section">
+    <section>
       <h2>Section 4 — Process: Formation & Testing</h2>
+      <div id="proc_formation" class="group"></div>
+    </section>
+
+    <div class="hr"></div>
+
+    <!-- ===== Section 5: Challenges & Metrics ===== -->
+    <section>
+      <h2>Section 5 — Challenges & Barriers</h2>
       <div class="card">
-        <p class="qtitle">Energy Optimization</p>
-        <div class="row"><div class="label">Raw Material</div><input class="slider" type="range" min="-20" max="20" step="1" name="eo_raw" value="0"><div class="value" data-for="eo_raw">0%</div></div>
-        <div class="row"><div class="label">Manufacturing</div><input class="slider" type="range" min="-20" max="20" step="1" name="eo_mfg" value="0"><div class="value" data-for="eo_mfg">0%</div></div>
-        <div class="row"><div class="label">Energy</div><input class="slider" type="range" min="-20" max="20" step="1" name="eo_energy" value="0"><div class="value" data-for="eo_energy">0%</div></div>
-        <div class="row"><div class="label">Labor</div><input class="slider" type="range" min="-20" max="20" step="1" name="eo_labor" value="0"><div class="value" data-for="eo_labor">0%</div></div>
-        <div class="row"><div class="label">Maintenance & Repair</div><input class="slider" type="range" min="-20" max="20" step="1" name="eo_maint" value="0"><div class="value" data-for="eo_maint">0%</div></div>
-        <div class="row"><div class="label">Scrap & Waste</div><input class="slider" type="range" min="-20" max="20" step="1" name="eo_scrap" value="0"><div class="value" data-for="eo_scrap">0%</div></div>
+        <p class="qtitle">The initial investment in smart manufacturing is justified by long‑term benefits.</p>
+        <div class="radio-col">
+          <label class="radio-row"><input type="radio" name="invest" value="Strongly disagree"> Strongly disagree</label>
+          <label class="radio-row"><input type="radio" name="invest" value="Disagree"> Disagree</label>
+          <label class="radio-row"><input type="radio" name="invest" value="Neutral"> Neutral</label>
+          <label class="radio-row"><input type="radio" name="invest" value="Agree"> Agree</label>
+          <label class="radio-row"><input type="radio" name="invest" value="Strongly agree"> Strongly agree</label>
+        </div>
+      </div>
+      <div class="card">
+        <p class="qtitle">Smart manufacturing is scalable for future battery production.</p>
+        <div class="radio-col">
+          <label class="radio-row"><input type="radio" name="scalable" value="Strongly disagree"> Strongly disagree</label>
+          <label class="radio-row"><input type="radio" name="scalable" value="Disagree"> Disagree</label>
+          <label class="radio-row"><input type="radio" name="scalable" value="Neutral"> Neutral</label>
+          <label class="radio-row"><input type="radio" name="scalable" value="Agree"> Agree</label>
+          <label class="radio-row"><input type="radio" name="scalable" value="Strongly agree"> Strongly agree</label>
+        </div>
+      </div>
+      <div class="card">
+        <p class="qtitle">Current smart manufacturing technologies are ready to handle the challenges of producing new battery chemistries.</p>
+        <div class="radio-col">
+          <label class="radio-row"><input type="radio" name="ready" value="Strongly disagree"> Strongly disagree</label>
+          <label class="radio-row"><input type="radio" name="ready" value="Disagree"> Disagree</label>
+          <label class="radio-row"><input type="radio" name="ready" value="Neutral"> Neutral</label>
+          <label class="radio-row"><input type="radio" name="ready" value="Agree"> Agree</label>
+          <label class="radio-row"><input type="radio" name="ready" value="Strongly agree"> Strongly agree</label>
+        </div>
+      </div>
+      <div class="card">
+        <p class="qtitle">What metrics would you use to evaluate success?</p>
+        <div class="radio-col">
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Cost"> Cost</label>
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Yield"> Yield</label>
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Scrap Rate"> Scrap Rate</label>
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Defect Rate"> Defect Rate</label>
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Energy Consumption"> Energy Consumption</label>
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Throughput"> Throughput</label>
+          <label class="radio-row"><input type="checkbox" name="metrics" value="Other"> Other</label>
+        </div>
       </div>
     </section>
 
-    <!-- Export / Submit -->
-    <section id="export" class="section">
+    <div class="hr"></div>
+
+    <!-- ===== Submit (minimal) ===== -->
+    <section>
       <h2>Submit</h2>
       <div class="card">
         <div class="actions">
-          <button id="submitSheets">Submit to Google Sheets</button>
+          <button id="submitSheets">Submit</button>
           <button class="secondary" id="downloadCsv">Download CSV</button>
-          <button class="secondary" id="copyJson">Copy JSON</button>
           <span id="status"></span>
         </div>
-        <p class="hint" style="margin-top:8px">Submissions go to your Google Sheet via Apps Script. If submission fails, use CSV as a fallback.</p>
+        <p class="hint" style="margin-top:8px">If Submit shows an error (CORS), your answers are still delivered. Use CSV as a fallback if needed.</p>
       </div>
     </section>
   </main>
 
 <script>
-  // ===== Dynamic slider coloring & value bubbles =====
-  const MIN=-20, MAX=20;
+  // ===== Config: capabilities & cost parameters (from PDF) =====
+  const CAPABILITIES = [
+    'Predictive Maintenance','Predictive Quality','Energy Optimization','Traceability','Digital Production Planning','Virtual Commissioning','Materials Flow Optimization'
+  ];
+  const COSTS = ['Raw Material','Manufacturing','Energy','Labor','Maintenance & Repair','Scrap & Waste'];
+  const PROCESSES = [
+    {mount:'proc_electrode', title:'Electrode Fabrication', key:'elec'},
+    {mount:'proc_assembly', title:'Cell Assembly', key:'assy'},
+    {mount:'proc_formation', title:'Formation & Testing', key:'form'}
+  ];
+
+  // Slider config: ±30 with ticks at ±20, ±10, 0 (end bins capture < -20 and > +20)
+  const MIN=-30, MAX=30, STEP=1, DEFAULT=0;
+
+  // ===== Build UI for each process: 7 capability blocks × 6 sliders each =====
+  PROCESSES.forEach(p=>{
+    const host = document.getElementById(p.mount);
+    CAPABILITIES.forEach((cap,cIdx)=>{
+      const card = document.createElement('div'); card.className='card';
+      const title = document.createElement('p'); title.className='qtitle'; title.textContent = cap; card.appendChild(title);
+      COSTS.forEach((cp,k)=> card.appendChild(makeRow(`${p.key}_${cIdx}_${k}`, cp)) );
+      host.appendChild(card);
+    });
+  });
+
+  function makeRow(name, label){
+    const row = document.createElement('div'); row.className='row';
+    const l = document.createElement('div'); l.className='label'; l.textContent=label; row.appendChild(l);
+
+    const mid = document.createElement('div');
+    const slider = document.createElement('input'); slider.type='range'; slider.className='slider';
+    slider.min=MIN; slider.max=MAX; slider.step=STEP; slider.value=DEFAULT; slider.name=name;
+    const ticks = document.createElement('div'); ticks.className='ticks'; ['−20','−10','0','10','20'].forEach(t=>{const s=document.createElement('span'); s.textContent=(t>0?'+':'')+t; ticks.appendChild(s)});
+    mid.appendChild(slider); mid.appendChild(ticks); row.appendChild(mid);
+
+    const r = document.createElement('div'); r.className='value'; r.dataset.for=name; r.textContent=fmt(slider.value); row.appendChild(r);
+
+    slider.addEventListener('input', ()=>{ r.textContent=fmt(slider.value); colorSlider(slider); });
+    colorSlider(slider);
+
+    return row;
+  }
+
   function fmt(v){ v=Number(v)||0; return (v>0?'+':'')+v+'%'; }
   function colorSlider(sl){
     const v=Number(sl.value)||0; const pct=(v-MIN)/(MAX-MIN)*100;
     let color='var(--neutral)'; if(v<0) color='var(--pos)'; else if(v>0) color='var(--neg)';
     sl.style.background = `linear-gradient(90deg, ${color} 0% , ${color} ${pct}%, #d1d5db ${pct}%, #d1d5db 100%)`;
   }
-  function bindSliders(){
-    document.querySelectorAll('input.slider').forEach(sl=>{
-      const out=document.querySelector(`.value[data-for="${sl.name}"]`);
-      const render=()=>{ if(out) out.textContent=fmt(sl.value); colorSlider(sl); };
-      sl.addEventListener('input', render); render();
-    });
-  }
-  bindSliders();
 
-  // ===== Collect data =====
+  // ===== Collect data into rows =====
   function gather(){
+    const meta = {
+      ts:new Date().toISOString(), range:`${MIN}..${MAX}`,
+      role: checked('role'), aware: checked('aware'), useful: checked('useful'), newchem: checked('newchem'),
+      invest: checked('invest'), scalable: checked('scalable'), ready: checked('ready'),
+      metrics: [...document.querySelectorAll('input[name="metrics"]:checked')].map(x=>x.value).join('; ')
+    };
+
     const rows=[];
-    const map=[
-      ['Electrode Fabrication','pm'],
-      ['Cell Assembly','pq'],
-      ['Formation & Testing','eo']
-    ];
-    const costs=['raw','mfg','energy','labor','maint','scrap'];
-    map.forEach(([process,pfx])=>{
-      costs.forEach(c=>{
-        const name = `${pfx}_${c}`;
-        const el = document.querySelector(`input[name="${name}"]`);
-        if(el){ rows.push({process, capability:pfx.toUpperCase(), cost_parameter:c.toUpperCase(), value:Number(el.value)}); }
+    PROCESSES.forEach(p=>{
+      CAPABILITIES.forEach((cap,cIdx)=>{
+        COSTS.forEach((cp,k)=>{
+          const name = `${p.key}_${cIdx}_${k}`;
+          const el = document.querySelector(`input[name="${name}"]`);
+          rows.push({process:p.title, capability:cap, cost_parameter:cp, value: Number(el.value)});
+        });
       });
     });
-    return {meta:{ts:new Date().toISOString(), range:`${MIN}..${MAX}`}, rows};
-  }
 
-  // ===== CSV / JSON =====
+    return {meta, rows};
+  }
+  function checked(name){ const el=document.querySelector(`input[name="${name}"]:checked`); return el? el.value : ''; }
+
+  // ===== CSV fallback =====
   function toCSV(data){
-    const header=['timestamp','process','capability','cost_parameter','value'];
+    const header=['timestamp','process','capability','cost_parameter','value','role','aware','useful','newchem','invest','scalable','ready','metrics'];
     const lines=[header.join(',')];
-    data.rows.forEach(r=> lines.push([data.meta.ts,r.process,r.capability,r.cost_parameter,r.value].join(',')) );
+    data.rows.forEach(r=>{
+      lines.push([data.meta.ts,r.process,r.capability,r.cost_parameter,r.value,data.meta.role,data.meta.aware,data.meta.useful,data.meta.newchem,data.meta.invest,data.meta.scalable,data.meta.ready,data.meta.metrics].join(','));
+    });
     return lines.join('\n');
   }
   function download(name,content,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),800); }
 
   document.getElementById('downloadCsv').onclick=()=>{const d=gather(); download(`smart_mfg_${new Date().toISOString().slice(0,10)}.csv`, toCSV(d), 'text/csv'); setStatus('CSV downloaded.');};
-  document.getElementById('copyJson').onclick=async()=>{const d=gather(); const j=JSON.stringify(d,null,2); try{await navigator.clipboard.writeText(j); setStatus('JSON copied.', true);}catch(e){ download(`smart_mfg_${new Date().toISOString().slice(0,10)}.json`, j, 'application/json'); setStatus('JSON downloaded.'); }};
-  function setStatus(m){ document.getElementById('status').textContent=m; }
 
-  // ===== Submit to Google Sheets (Apps Script web app) =====
+  // ===== Submit to Google Sheets =====
   const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzsDUFrcptxhiDYhXqEv8C-vkygw3aWbgneeFboSu7HtWFGjVVrWfmHPtnGaEXNfOgJ/exec';
   document.getElementById('submitSheets').onclick = async ()=>{
     setStatus('Submitting…');
     try{
       const payload = gather();
-      const res = await fetch(SHEETS_ENDPOINT, {
-        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
-        // If you get CORS warnings, uncomment the next line:
-        // ,mode:'no-cors'
+      await fetch(SHEETS_ENDPOINT, {
+        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload),
+        // Apps Script does not send CORS headers by default; no-cors still delivers the payload.
+        mode:'no-cors'
       });
-      setStatus('Submitted! Check your Google Sheet (Responses tab).');
-    }catch(e){
-      console.error(e); setStatus('Submission failed. Use CSV as fallback.');
-    }
+      setStatus('Submitted! Check your Google Sheet.');
+    }catch(e){ console.error(e); setStatus('Submission failed. Use CSV as fallback.'); }
   };
+
+  function setStatus(m){ document.getElementById('status').textContent=m; }
 </script>
 </body>
 </html>
