@@ -1,1016 +1,820 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impact of Smart Manufacturing on Battery Production</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Impact of Smart Manufacturing on Battery Production</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-weight: 300;
+      background: #fff;
+      color: #2c3e50;
+      line-height: 1.55;
+      padding: 16px;
+    }
+    .container { max-width: 820px; margin: 0 auto; }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-        }
+    /* Headings */
+    h1 {
+      text-align: center;
+      margin: 8px 0 20px;
+      font-weight: 400;
+      color: #2c3e50;
+      letter-spacing: 0.2px;
+    }
+    .section {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 18px 0;
+    }
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      font-weight: 400;
+      color: #34495e;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    /* Questions */
+    .question { margin: 14px 0 18px; }
+    .question-text {
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: #2c3e50;
+    }
+    .radio-group, .checkbox-group { display: grid; gap: 8px; }
+    .radio-option, .checkbox-option { display: flex; gap: 8px; align-items: center; font-weight: 300; }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #2c3e50;
-        }
+    /* Sliders */
+    .slider-group { margin: 14px 0; }
+    .slider-label { display: block; margin: 0 0 6px; }
+    .slider-wrapper { display: flex; gap: 10px; align-items: center; }
+    .slider-wrapper span { font-size: 12px; color: #666; }
+    .slider-value { min-width: 48px; text-align: right; font-weight: 400; }
 
-        .section {
-            background-color: #f8f9fa;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
-        }
+    input[type="range"].slider {
+      flex: 1;
+      height: 4px;                /* thinner track */
+      background: #ddd;
+      border-radius: 2px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #3498db; cursor: pointer;
+    }
+    .slider::-moz-range-thumb {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #3498db; border: none; cursor: pointer;
+    }
 
-        .section h2 {
-            color: #34495e;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-        }
+    /* Ranking (simplified) */
+    .rank-grid {
+      display: grid;
+      grid-template-columns: 1fr 120px;
+      gap: 10px;
+      align-items: center;
+    }
+    .rank-grid label { font-weight: 300; }
+    select, input[type="text"] {
+      padding: 8px 10px;
+      border: 1px solid #dfe3e6;
+      border-radius: 6px;
+      background: #fff;
+      font-family: inherit;
+      font-weight: 300;
+    }
 
-        .question {
-            margin-bottom: 25px;
-        }
+    /* Button */
+    .submit-btn {
+      background: #3498db; color: #fff;
+      padding: 12px 22px; border: 0; border-radius: 6px;
+      font-size: 15px; cursor: pointer; display: block; margin: 22px auto 6px;
+      transition: opacity 0.2s ease;
+    }
+    .submit-btn:hover:not(:disabled) { opacity: 0.9; }
+    .submit-btn:disabled { background: #bdc3c7; cursor: not-allowed; }
 
-        .question-text {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .radio-option input[type="radio"] {
-            margin: 0;
-        }
-
-        .slider-container {
-            margin: 15px 0;
-        }
-
-        .slider-group {
-            margin-bottom: 20px;
-        }
-
-        .slider-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .slider-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .slider {
-            flex: 1;
-            height: 6px;
-            border-radius: 3px;
-            background: #ddd;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #3498db;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #3498db;
-            cursor: pointer;
-            border: none;
-        }
-
-        .slider-value {
-            min-width: 60px;
-            text-align: center;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .checkbox-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .submit-btn {
-            background-color: #3498db;
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            display: block;
-            margin: 30px auto 0;
-            transition: background-color 0.3s;
-        }
-
-        .submit-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .ranking-container {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: white;
-        }
-
-        .ranking-item {
-            padding: 10px;
-            margin: 5px 0;
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 3px;
-            cursor: move;
-            user-select: none;
-        }
-
-        .ranking-item:hover {
-            background-color: #e9ecef;
-        }
-
-        .required {
-            color: red;
-        }
-    </style>
+    .required { color: #e74c3c; }
+    .hint { font-size: 12px; color: #6c757d; margin-top: -6px; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Impact of Smart Manufacturing on Battery Production</h1>
-        
-        <form id="surveyForm">
-            <!-- Section 1: Smart Manufacturing Awareness -->
-            <div class="section">
-                <h2>1. Smart Manufacturing Awareness</h2>
-                
-                <div class="question">
-                    <div class="question-text">1. Describe your current role. <span class="required">*</span></div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="role1" name="currentRole" value="Academic Researcher" required>
-                            <label for="role1">Academic Researcher</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="role2" name="currentRole" value="Industry Professional (R&D)">
-                            <label for="role2">Industry Professional (R&D)</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="role3" name="currentRole" value="Industry Professional (Manufacturing)">
-                            <label for="role3">Industry Professional (Manufacturing)</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="role4" name="currentRole" value="Technical Consultant">
-                            <label for="role4">Technical Consultant</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="role5" name="currentRole" value="Government Employee">
-                            <label for="role5">Government Employee</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="role6" name="currentRole" value="Other">
-                            <label for="role6">Other</label>
-                        </div>
-                    </div>
-                </div>
+  <div class="container">
+    <h1>Impact of Smart Manufacturing on Battery Production</h1>
 
-                <div class="question">
-                    <div class="question-text">2. I am aware of smart manufacturing applications in the battery industry.</div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="awareness1" name="smartMfgAwareness" value="Strongly Agree">
-                            <label for="awareness1">Strongly Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="awareness2" name="smartMfgAwareness" value="Agree">
-                            <label for="awareness2">Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="awareness3" name="smartMfgAwareness" value="Neutral">
-                            <label for="awareness3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="awareness4" name="smartMfgAwareness" value="Disagree">
-                            <label for="awareness4">Disagree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="awareness5" name="smartMfgAwareness" value="Strongly Disagree">
-                            <label for="awareness5">Strongly Disagree</label>
-                        </div>
-                    </div>
-                </div>
+    <form id="surveyForm">
+      <!-- Section 1 -->
+      <div class="section">
+        <h2>1. Smart Manufacturing Awareness</h2>
 
-                <div class="question">
-                    <div class="question-text">3. I believe that smart manufacturing is useful for improving parameters (e.g., cost, quality, time, energy efficiency, scalability, etc.)</div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="useful1" name="smartMfgUseful" value="Strongly Agree">
-                            <label for="useful1">Strongly Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="useful2" name="smartMfgUseful" value="Agree">
-                            <label for="useful2">Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="useful3" name="smartMfgUseful" value="Neutral">
-                            <label for="useful3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="useful4" name="smartMfgUseful" value="Disagree">
-                            <label for="useful4">Disagree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="useful5" name="smartMfgUseful" value="Strongly Disagree">
-                            <label for="useful5">Strongly Disagree</label>
-                        </div>
-                    </div>
-                </div>
+        <div class="question">
+          <div class="question-text">1. Describe your current role. <span class="required">*</span></div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="currentRole" value="Academic Researcher" required/> Academic Researcher</label>
+            <label class="radio-option"><input type="radio" name="currentRole" value="Industry Professional (R&amp;D)"/> Industry Professional (R&amp;D)</label>
+            <label class="radio-option"><input type="radio" name="currentRole" value="Industry Professional (Manufacturing)"/> Industry Professional (Manufacturing)</label>
+            <label class="radio-option"><input type="radio" name="currentRole" value="Technical Consultant"/> Technical Consultant</label>
+            <label class="radio-option"><input type="radio" name="currentRole" value="Government Employee"/> Government Employee</label>
+            <label class="radio-option"><input type="radio" name="currentRole" value="Other"/> Other</label>
+          </div>
+        </div>
 
-                <div class="question">
-                    <div class="question-text">4. I believe that smart manufacturing is important for accelerating the adoption of new battery chemistries (e.g., solid-state batteries, lithium sulfur, sodium ion, etc.)</div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="chemistry1" name="newChemistries" value="Strongly Agree">
-                            <label for="chemistry1">Strongly Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="chemistry2" name="newChemistries" value="Agree">
-                            <label for="chemistry2">Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="chemistry3" name="newChemistries" value="Neutral">
-                            <label for="chemistry3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="chemistry4" name="newChemistries" value="Disagree">
-                            <label for="chemistry4">Disagree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="chemistry5" name="newChemistries" value="Strongly Disagree">
-                            <label for="chemistry5">Strongly Disagree</label>
-                        </div>
-                    </div>
-                </div>
+        <div class="question">
+          <div class="question-text">2. I am aware of smart manufacturing applications in the battery industry.</div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="smartMfgAwareness" value="Strongly Agree"/> Strongly Agree</label>
+            <label class="radio-option"><input type="radio" name="smartMfgAwareness" value="Agree"/> Agree</label>
+            <label class="radio-option"><input type="radio" name="smartMfgAwareness" value="Neutral"/> Neutral</label>
+            <label class="radio-option"><input type="radio" name="smartMfgAwareness" value="Disagree"/> Disagree</label>
+            <label class="radio-option"><input type="radio" name="smartMfgAwareness" value="Strongly Disagree"/> Strongly Disagree</label>
+          </div>
+        </div>
 
-                <div class="question">
-                    <div class="question-text">5. Rank how important the implementation of smart manufacturing is to each manufacturing step (drag to reorder, top = most important)</div>
-                    <div class="ranking-container" id="manufacturingSteps">
-                        <div class="ranking-item" draggable="true" data-value="Electrode Fabrication">Electrode Fabrication</div>
-                        <div class="ranking-item" draggable="true" data-value="Cell Assembly">Cell Assembly</div>
-                        <div class="ranking-item" draggable="true" data-value="Formation and Testing">Formation and Testing</div>
-                    </div>
-                    <input type="hidden" id="stepsRanking" name="stepsRanking">
-                </div>
+        <div class="question">
+          <div class="question-text">3. I believe that smart manufacturing is useful for improving parameters (e.g., cost, quality, time, energy efficiency, scalability, etc.).</div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="smartMfgUseful" value="Strongly Agree"/> Strongly Agree</label>
+            <label class="radio-option"><input type="radio" name="smartMfgUseful" value="Agree"/> Agree</label>
+            <label class="radio-option"><input type="radio" name="smartMfgUseful" value="Neutral"/> Neutral</label>
+            <label class="radio-option"><input type="radio" name="smartMfgUseful" value="Disagree"/> Disagree</label>
+            <label class="radio-option"><input type="radio" name="smartMfgUseful" value="Strongly Disagree"/> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="question-text">4. I believe that smart manufacturing is important for accelerating the adoption of new battery chemistries (e.g., solid-state batteries, lithium sulfur, sodium ion, etc.).</div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="newChemistries" value="Strongly Agree"/> Strongly Agree</label>
+            <label class="radio-option"><input type="radio" name="newChemistries" value="Agree"/> Agree</label>
+            <label class="radio-option"><input type="radio" name="newChemistries" value="Neutral"/> Neutral</label>
+            <label class="radio-option"><input type="radio" name="newChemistries" value="Disagree"/> Disagree</label>
+            <label class="radio-option"><input type="radio" name="newChemistries" value="Strongly Disagree"/> Strongly Disagree</label>
+          </div>
+        </div>
+
+        <!-- Simplified Ranking -->
+        <div class="question">
+          <div class="question-text">5. Rank how important the implementation of smart manufacturing is to each manufacturing step (1 = most important, 3 = least). Ties are okay.</div>
+          <div class="rank-grid">
+            <label for="rank_electrode">Electrode Fabrication</label>
+            <select id="rank_electrode" name="rank_electrode">
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            </select>
+
+            <label for="rank_cellassembly">Cell Assembly</label>
+            <select id="rank_cellassembly" name="rank_cellassembly">
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            </select>
+
+            <label for="rank_formation">Formation and Testing</label>
+            <select id="rank_formation" name="rank_formation">
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            </select>
+          </div>
+          <div class="hint">We’ll store these as a simple “step → rank” mapping.</div>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="section">
+        <h2>2. Impact on Cost Parameters (Electrode Fabrication)</h2>
+        <p class="hint">Use the slider to set values from &lt; -20% to &gt; +20% (negative values indicate cost reduction/improvement).</p>
+
+        <!-- Helper to create a capability block:
+             Each has 6 sliders: raw materials, manufacturing, energy, labor, maintenance, scrap. -->
+
+        <!-- Predictive Maintenance -->
+        <div class="question">
+          <div class="question-text">Predictive Maintenance Impact on Cost Parameters</div>
+
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_maint_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_maint_raw_materials_value">0%</div>
             </div>
+          </div>
 
-            <!-- Section 2: Impact on Cost Parameters -->
-            <div class="section">
-                <h2>2. Impact on Cost Parameters (Electrode Fabrication)</h2>
-                <p style="margin-bottom: 20px; font-style: italic;">Please indicate the impact range (%) for each capability on each cost parameter. Use the slider to set values from -20% to +20% (negative values indicate cost reduction/improvement).</p>
-
-                <!-- Predictive Maintenance -->
-                <div class="question">
-                    <div class="question-text">Predictive Maintenance Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_maint_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_maint_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_maint_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_maint_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_maint_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_maint_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_maint_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_maint_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_maint_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_maint_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_maint_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_maint_scrap_value">0%</div>
-                    </div>
-                </div>
-
-                <!-- Predictive Quality -->
-                <div class="question">
-                    <div class="question-text">Predictive Quality Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_qual_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_qual_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_qual_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_qual_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_qual_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_qual_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_qual_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_qual_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_qual_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_qual_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="pred_qual_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="pred_qual_scrap_value">0%</div>
-                    </div>
-                </div>
-
-                <!-- Energy Optimization -->
-                <div class="question">
-                    <div class="question-text">Energy Optimization Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="energy_opt_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="energy_opt_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="energy_opt_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="energy_opt_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="energy_opt_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="energy_opt_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="energy_opt_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="energy_opt_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="energy_opt_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="energy_opt_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="energy_opt_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="energy_opt_scrap_value">0%</div>
-                    </div>
-                </div>
-
-                <!-- Traceability -->
-                <div class="question">
-                    <div class="question-text">Traceability Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="trace_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="trace_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="trace_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="trace_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="trace_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="trace_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="trace_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="trace_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="trace_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="trace_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="trace_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="trace_scrap_value">0%</div>
-                    </div>
-                </div>
-
-                <!-- Digital Production and Planning -->
-                <div class="question">
-                    <div class="question-text">Digital Production and Planning Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="digital_prod_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="digital_prod_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="digital_prod_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="digital_prod_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="digital_prod_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="digital_prod_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="digital_prod_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="digital_prod_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="digital_prod_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="digital_prod_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="digital_prod_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="digital_prod_scrap_value">0%</div>
-                    </div>
-                </div>
-
-                <!-- Virtual Commissioning -->
-                <div class="question">
-                    <div class="question-text">Virtual Commissioning Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="virtual_comm_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="virtual_comm_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="virtual_comm_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="virtual_comm_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="virtual_comm_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="virtual_comm_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="virtual_comm_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="virtual_comm_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="virtual_comm_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="virtual_comm_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="virtual_comm_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="virtual_comm_scrap_value">0%</div>
-                    </div>
-                </div>
-
-                <!-- Materials Flow and Optimization -->
-                <div class="question">
-                    <div class="question-text">Materials Flow and Optimization Impact on Cost Parameters</div>
-                    
-                    <div class="slider-group">
-                        <label class="slider-label">Raw Materials Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="materials_flow_raw_materials" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="materials_flow_raw_materials_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Manufacturing Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="materials_flow_manufacturing" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="materials_flow_manufacturing_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Energy Consumption Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="materials_flow_energy" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="materials_flow_energy_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Labor Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="materials_flow_labor" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="materials_flow_labor_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Maintenance Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="materials_flow_maintenance" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="materials_flow_maintenance_value">0%</div>
-                    </div>
-
-                    <div class="slider-group">
-                        <label class="slider-label">Scrap Rate Costs</label>
-                        <div class="slider-wrapper">
-                            <span>-20%</span>
-                            <input type="range" class="slider" min="-20" max="20" value="0" name="materials_flow_scrap" oninput="updateSliderValue(this)">
-                            <span>+20%</span>
-                        </div>
-                        <div class="slider-value" id="materials_flow_scrap_value">0%</div>
-                    </div>
-                </div>
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_maint_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_maint_manufacturing_value">0%</div>
             </div>
+          </div>
 
-            <!-- Section 3: Challenges and Barriers -->
-            <div class="section">
-                <h2>3. Challenges and Barriers of Smart Manufacturing</h2>
-
-                <div class="question">
-                    <div class="question-text">27. The initial investment in smart manufacturing is justified by long-term benefits.</div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="investment1" name="initialInvestment" value="Strongly agree">
-                            <label for="investment1">Strongly agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="investment2" name="initialInvestment" value="Agree">
-                            <label for="investment2">Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="investment3" name="initialInvestment" value="Neutral">
-                            <label for="investment3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="investment4" name="initialInvestment" value="Disagree">
-                            <label for="investment4">Disagree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="investment5" name="initialInvestment" value="Strongly disagree">
-                            <label for="investment5">Strongly disagree</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <div class="question-text">28. Smart manufacturing technology is scalable for future battery production.</div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="scalable1" name="scalableTech" value="Strongly agree">
-                            <label for="scalable1">Strongly agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="scalable2" name="scalableTech" value="Agree">
-                            <label for="scalable2">Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="scalable3" name="scalableTech" value="Neutral">
-                            <label for="scalable3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="scalable4" name="scalableTech" value="Disagree">
-                            <label for="scalable4">Disagree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="scalable5" name="scalableTech" value="Strongly disagree">
-                            <label for="scalable5">Strongly disagree</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <div class="question-text">29. Current smart manufacturing technologies are ready to handle the challenges of producing new battery chemistries.</div>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="ready1" name="techReady" value="Strongly agree">
-                            <label for="ready1">Strongly agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="ready2" name="techReady" value="Agree">
-                            <label for="ready2">Agree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="ready3" name="techReady" value="Neutral">
-                            <label for="ready3">Neutral</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="ready4" name="techReady" value="Disagree">
-                            <label for="ready4">Disagree</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="ready5" name="techReady" value="Strongly disagree">
-                            <label for="ready5">Strongly disagree</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="question">
-                    <div class="question-text">30. What metrics would you use to evaluate the success of smart manufacturing?</div>
-                    <div class="checkbox-group">
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric1" name="successMetrics" value="Cost">
-                            <label for="metric1">Cost</label>
-                        </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric2" name="successMetrics" value="Yield">
-                            <label for="metric2">Yield</label>
-                        </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric3" name="successMetrics" value="Scrap Rate">
-                            <label for="metric3">Scrap Rate</label>
-                        </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric4" name="successMetrics" value="Defect Rate">
-                            <label for="metric4">Defect Rate</label>
-                        </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric5" name="successMetrics" value="Energy Consumption">
-                            <label for="metric5">Energy Consumption</label>
-                        </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric6" name="successMetrics" value="Throughput">
-                            <label for="metric6">Throughput</label>
-                        </div>
-                        <div class="checkbox-option">
-                            <input type="checkbox" id="metric7" name="successMetrics" value="Other">
-                            <label for="metric7">Other</label>
-                        </div>
-                    </div>
-                </div>
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_maint_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_maint_energy_value">0%</div>
             </div>
+          </div>
 
-            <button type="submit" class="submit-btn">Submit Survey</button>
-        </form>
-    </div>
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_maint_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_maint_labor_value">0%</div>
+            </div>
+          </div>
 
-    <script>
-        // Update slider values
-        function updateSliderValue(slider) {
-            const valueElement = document.getElementById(slider.name + '_value');
-            valueElement.textContent = slider.value + '%';
-        }
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_maint_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_maint_maintenance_value">0%</div>
+            </div>
+          </div>
 
-        // Drag and drop functionality for ranking
-        let draggedItem = null;
-        const rankingContainer = document.getElementById('manufacturingSteps');
-        const rankingItems = rankingContainer.querySelectorAll('.ranking-item');
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_maint_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_maint_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
 
-        rankingItems.forEach(item => {
-            item.addEventListener('dragstart', function(e) {
-                draggedItem = this;
-                this.style.opacity = '0.5';
-            });
+        <!-- Energy Optimization -->
+        <div class="question">
+          <div class="question-text">Energy Optimization Impact on Cost Parameters</div>
 
-            item.addEventListener('dragend', function(e) {
-                this.style.opacity = '';
-                draggedItem = null;
-            });
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="energy_opt_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="energy_opt_raw_materials_value">0%</div>
+            </div>
+          </div>
 
-            item.addEventListener('dragover', function(e) {
-                e.preventDefault();
-            });
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="energy_opt_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="energy_opt_manufacturing_value">0%</div>
+            </div>
+          </div>
 
-            item.addEventListener('drop', function(e) {
-                e.preventDefault();
-                if (this !== draggedItem) {
-                    const allItems = Array.from(rankingContainer.children);
-                    const draggedIndex = allItems.indexOf(draggedItem);
-                    const targetIndex = allItems.indexOf(this);
-                    
-                    if (draggedIndex < targetIndex) {
-                        this.parentNode.insertBefore(draggedItem, this.nextSibling);
-                    } else {
-                        this.parentNode.insertBefore(draggedItem, this);
-                    }
-                    updateRanking();
-                }
-            });
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="energy_opt_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="energy_opt_energy_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="energy_opt_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="energy_opt_labor_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="energy_opt_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="energy_opt_maintenance_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="energy_opt_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="energy_opt_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Traceability -->
+        <div class="question">
+          <div class="question-text">Traceability Impact on Cost Parameters</div>
+
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="trace_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="trace_raw_materials_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="trace_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="trace_manufacturing_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="trace_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="trace_energy_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="trace_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="trace_labor_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="trace_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="trace_maintenance_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="trace_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="trace_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Digital Production and Planning -->
+        <div class="question">
+          <div class="question-text">Digital Production and Planning Impact on Cost Parameters</div>
+
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="digital_prod_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="digital_prod_raw_materials_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="digital_prod_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="digital_prod_manufacturing_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="digital_prod_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="digital_prod_energy_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="digital_prod_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="digital_prod_labor_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="digital_prod_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="digital_prod_maintenance_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="digital_prod_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="digital_prod_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Virtual Commissioning -->
+        <div class="question">
+          <div class="question-text">Virtual Commissioning Impact on Cost Parameters</div>
+
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="virtual_comm_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="virtual_comm_raw_materials_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="virtual_comm_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="virtual_comm_manufacturing_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="virtual_comm_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="virtual_comm_energy_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="virtual_comm_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="virtual_comm_labor_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="virtual_comm_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="virtual_comm_maintenance_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="virtual_comm_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="virtual_comm_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Materials Flow and Optimization -->
+        <div class="question">
+          <div class="question-text">Materials Flow and Optimization Impact on Cost Parameters</div>
+
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="materials_flow_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="materials_flow_raw_materials_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="materials_flow_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="materials_flow_manufacturing_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="materials_flow_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="materials_flow_energy_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="materials_flow_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="materials_flow_labor_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="materials_flow_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="materials_flow_maintenance_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="materials_flow_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="materials_flow_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Predictive Quality (from your appended block) -->
+        <div class="question">
+          <div class="question-text">Predictive Quality Impact on Cost Parameters</div>
+
+          <div class="slider-group">
+            <label class="slider-label">Raw Materials Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_qual_raw_materials" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_qual_raw_materials_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Manufacturing Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_qual_manufacturing" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_qual_manufacturing_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Energy Consumption Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_qual_energy" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_qual_energy_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Labor Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_qual_labor" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_qual_labor_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Maintenance Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_qual_maintenance" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_qual_maintenance_value">0%</div>
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <label class="slider-label">Scrap Rate Costs</label>
+            <div class="slider-wrapper">
+              <span>&lt; -20%</span>
+              <input type="range" class="slider" min="-20" max="20" value="0"
+                     name="pred_qual_scrap" oninput="updateSliderValue(this)"/>
+              <span>&gt; +20%</span>
+              <div class="slider-value" id="pred_qual_scrap_value">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="section">
+        <h2>3. Challenges and Barriers of Smart Manufacturing</h2>
+
+        <div class="question">
+          <div class="question-text">27. The initial investment in smart manufacturing is justified by long-term benefits.</div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="initialInvestment" value="Strongly agree"/> Strongly agree</label>
+            <label class="radio-option"><input type="radio" name="initialInvestment" value="Agree"/> Agree</label>
+            <label class="radio-option"><input type="radio" name="initialInvestment" value="Neutral"/> Neutral</label>
+            <label class="radio-option"><input type="radio" name="initialInvestment" value="Disagree"/> Disagree</label>
+            <label class="radio-option"><input type="radio" name="initialInvestment" value="Strongly disagree"/> Strongly disagree</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="question-text">28. Smart manufacturing technology is scalable for future battery production.</div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="scalableTech" value="Strongly agree"/> Strongly agree</label>
+            <label class="radio-option"><input type="radio" name="scalableTech" value="Agree"/> Agree</label>
+            <label class="radio-option"><input type="radio" name="scalableTech" value="Neutral"/> Neutral</label>
+            <label class="radio-option"><input type="radio" name="scalableTech" value="Disagree"/> Disagree</label>
+            <label class="radio-option"><input type="radio" name="scalableTech" value="Strongly disagree"/> Strongly disagree</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="question-text">29. Current smart manufacturing technologies are ready to handle the challenges of producing new battery chemistries.</div>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="techReady" value="Strongly agree"/> Strongly agree</label>
+            <label class="radio-option"><input type="radio" name="techReady" value="Agree"/> Agree</label>
+            <label class="radio-option"><input type="radio" name="techReady" value="Neutral"/> Neutral</label>
+            <label class="radio-option"><input type="radio" name="techReady" value="Disagree"/> Disagree</label>
+            <label class="radio-option"><input type="radio" name="techReady" value="Strongly disagree"/> Strongly disagree</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <div class="question-text">30. What metrics would you use to evaluate the success of smart manufacturing?</div>
+          <div class="checkbox-group">
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Cost"/> Cost</label>
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Yield"/> Yield</label>
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Scrap Rate"/> Scrap Rate</label>
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Defect Rate"/> Defect Rate</label>
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Energy Consumption"/> Energy Consumption</label>
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Throughput"/> Throughput</label>
+            <label class="checkbox-option"><input type="checkbox" name="successMetrics" value="Other"/> Other</label>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    // Replace with your actual Google Apps Script URL
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+    // Update slider value text
+    function updateSliderValue(slider) {
+      const valueElement = document.getElementById(slider.name + '_value');
+      if (valueElement) valueElement.textContent = slider.value + '%';
+    }
+
+    // Initialize all slider-value labels to current values on load
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type="range"].slider').forEach(sl => updateSliderValue(sl));
+    });
+
+    // Submit handler
+    document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const submitBtn = document.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+
+      try {
+        // Collect form data
+        const formData = new FormData(e.target);
+
+        // Aggregate checkbox group
+        const successMetrics = [];
+        document.querySelectorAll('input[name="successMetrics"]:checked').forEach(cb => successMetrics.push(cb.value));
+        formData.set('successMetrics', successMetrics.join(','));
+
+        // Ranking as simple mapping
+        const rankMap = {
+          "Electrode Fabrication": formData.get('rank_electrode'),
+          "Cell Assembly": formData.get('rank_cellassembly'),
+          "Formation and Testing": formData.get('rank_formation'),
+        };
+        formData.set('stepsRanking', JSON.stringify(rankMap));
+
+        // Convert to plain object
+        const data = {};
+        for (const [k, v] of formData.entries()) data[k] = v;
+
+        // Timestamp
+        data.timestamp = new Date().toISOString();
+
+        // Submit (no-cors)
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+          mode: 'no-cors'
         });
 
-        function updateRanking() {
-            const items = rankingContainer.querySelectorAll('.ranking-item');
-            const ranking = Array.from(items).map(item => item.dataset.value);
-            document.getElementById('stepsRanking').value = ranking.join(',');
-        }
-
-        // Initialize ranking
-        updateRanking();
-
-        // Form submission
-        document.getElementById('surveyForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Collect all form data
-            const formData = new FormData(this);
-            
-            // Handle checkbox groups
-            const successMetrics = [];
-            document.querySelectorAll('input[name="successMetrics"]:checked').forEach(checkbox => {
-                successMetrics.push(checkbox.value);
-            });
-            formData.set('successMetrics', successMetrics.join(','));
-            
-            // Convert FormData to object
-            const data = {};
-            for (let [key, value] of formData.entries()) {
-                data[key] = value;
-            }
-            
-            // Add timestamp
-            data.timestamp = new Date().toISOString();
-            
-            // Here you would typically send the data to Google Sheets
-            // For now, we'll log it to console
-            console.log('Survey Data:', data);
-            
-            // Show success message
-            alert('Thank you for your response! Your survey has been submitted.');
-            
-            // You can add Google Sheets integration here
-            // submitToGoogleSheets(data);
-        });
-        
-        // Placeholder function for Google Sheets integration
-        function submitToGoogleSheets(data) {
-            // You would implement the Google Sheets API integration here
-            // This could be done through Google Apps Script or a backend service
-            
-            // Example using Google Apps Script Web App:
-            /*
-            fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Success:', result);
-                alert('Survey submitted successfully!');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting your survey. Please try again.');
-            });
-            */
-        }
-    </script>
+        alert('Thank you! Your survey has been submitted.');
+        e.target.reset();
+        // Reset slider labels
+        document.querySelectorAll('.slider-value').forEach(el => el.textContent = '0%');
+      } catch (err) {
+        console.error(err);
+        alert('There was an error submitting your survey. Please try again.');
+      } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
